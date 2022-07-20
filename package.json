@@ -2,7 +2,7 @@
   "name": "enum2map",
 	"displayName": "enum2map(enum map generator)",
 	"description": "generate mapper from enum in TS; enum2map",
-	"version": "0.0.5",
+	"version": "0.0.6",
 	"engines": {
 		"vscode": "^1.69.0"
 	},
@@ -40,12 +40,12 @@
 		"keybindings":[
 			{
 				"command": "enum2map.generateMap",
-				"key": "cmd+m",
+				"key": "alt+m",
 				"when": "editorLangId == typescript && editorHasSelection"
 			},
 			{
 				"command": "enum2map.generateOptions",
-				"key": "cmd+o",
+				"key": "alt+o",
 				"when": "editorLangId == typescript && editorHasSelection"
 			}
 		],
