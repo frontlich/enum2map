@@ -1,54 +1,14 @@
-import {
-  getLeadingCommentRanges,
-  isEnumMember,
-  isEnumDeclaration,
-  createSourceFile,
-  ScriptTarget,
-} from "typescript";
-import type { Node, SourceFile, EnumDeclaration } from "typescript";
+import * as vscode from "vscode";
+import { isEnumDeclaration, createSourceFile, ScriptTarget } from "typescript";
+import type { Node, EnumDeclaration, SourceFile } from "typescript";
 
-function getComment(node: Node, sourceFile: SourceFile) {
-  const fullText = sourceFile.getFullText();
-  const commentRanges = getLeadingCommentRanges(fullText, node.getFullStart());
-  if (commentRanges?.length) {
-    const commentStrings = commentRanges.map((r) =>
-      fullText.slice(r.pos, r.end)
-    );
-    return commentStrings[commentStrings.length - 1];
-  }
-  return "";
-}
+import { toMap } from "./toMap";
+import { toOptions } from "./toOptions";
 
-function comment2Text(comment: string) {
-  return comment.replace(/[\/\*\s]/g, "").trim();
-}
-
-function enumNode2Code(node: EnumDeclaration, sourceFile: SourceFile) {
-  const firstToken = node.getFirstToken(sourceFile)?.getFullText(sourceFile);
-
-  const comment = getComment(node, sourceFile);
-
-  let outputCode = `${comment ? `${comment}\n` : ""}${
-    firstToken?.endsWith("export") ? "export " : ""
-  }const ${node.name.text}Map: Record<${node.name.text}, string> = {`;
-
-  const members: string[] = [];
-  node.forEachChild((n) => {
-    const comment = getComment(n, sourceFile);
-    const text = comment2Text(comment);
-    if (isEnumMember(n)) {
-      const propertyName = n.name.getText(sourceFile);
-      members.push(
-        `  [${node.name.text}.${propertyName}]: '${text || propertyName}',`
-      );
-    }
-  });
-  outputCode += `\n${members.join("\n")}\n}`;
-
-  return outputCode;
-}
-
-export function getEnumMap(sourceCode: string) {
+export function transform(
+  sourceCode: string,
+  convert: (node: EnumDeclaration, sourceFile: SourceFile) => string
+) {
   const sourceFile = createSourceFile(
     "file.ts", // filePath
     sourceCode, // fileText
@@ -59,7 +19,7 @@ export function getEnumMap(sourceCode: string) {
 
   function visit(node: Node) {
     if (isEnumDeclaration(node)) {
-      const code = enumNode2Code(node, sourceFile);
+      const code = convert(node, sourceFile);
       output.push(code);
     }
 
@@ -70,3 +30,33 @@ export function getEnumMap(sourceCode: string) {
 
   return output.join("\n\n");
 }
+
+function createGenerator(
+  convert: (node: EnumDeclaration, sourceFile: SourceFile) => string
+) {
+  return function () {
+    const selection = vscode.window.activeTextEditor?.selection;
+
+    const sourceCode =
+      vscode.window.activeTextEditor?.document.getText(selection);
+
+    if (!selection || !sourceCode) {
+      return vscode.window.showErrorMessage("no active selection");
+    }
+
+    vscode.window.activeTextEditor?.edit((builder) => {
+      const enumMap = transform(sourceCode, convert);
+      if (enumMap) {
+        builder.insert(
+          selection.end,
+          `${sourceCode.endsWith("\n") ? "" : "\n"}\n${enumMap}`
+        );
+      } else {
+        vscode.window.showErrorMessage("active selection is not enum");
+      }
+    });
+  };
+}
+
+export const generateMap = createGenerator(toMap);
+export const generateOptions = createGenerator(toOptions);

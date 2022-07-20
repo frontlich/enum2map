@@ -2,7 +2,7 @@
   "name": "enum2map",
 	"displayName": "enum2map(enum map generator)",
 	"description": "generate mapper from enum in TS; enum2map",
-	"version": "0.0.3",
+	"version": "0.0.4",
 	"engines": {
 		"vscode": "^1.69.0"
 	},
@@ -10,27 +10,59 @@
 		"Other"
 	],
 	"activationEvents": [
-    "onCommand:enum2map.generate"
+    "onCommand:enum2map.generateMap",
+    "onCommand:enum2map.generateOptions"
 	],
 	"main": "./dist/extension.js",
 	"contributes": {
 		"commands": [
 			{
-				"command": "enum2map.generate",
-				"title": "enum2map"
+				"command": "enum2map.generateMap",
+				"title": "enum2map-map"
+			},
+			{
+				"command": "enum2map.generateOptions",
+				"title": "enum2map-options"
 			}
 		],
 		"menus": {
 			"editor/context": [
 				{
-					"command": "enum2map.generate",
-					"when": "editorLangId == typescript"
+					"command": "enum2map.generateMap",
+					"when": "editorLangId == typescript && editorHasSelection"
+				},
+				{
+					"command": "enum2map.generateOptions",
+					"when": "editorLangId == typescript && editorHasSelection"
 				}
 			]
 		},
-		"keybindings":{
-			"command": "enum2map.generate",
-			"key": "cmd+y"
+		"keybindings":[
+			{
+				"command": "enum2map.generateMap",
+				"key": "cmd+m",
+				"when": "editorLangId == typescript && editorHasSelection"
+			},
+			{
+				"command": "enum2map.generateOptions",
+				"key": "cmd+o",
+				"when": "editorLangId == typescript && editorHasSelection"
+			}
+		],
+		"configuration":{
+			"title": "enum2map-options configuration",
+			"properties": {
+				"enum2map.optionsLabel": {
+					"type":"string",
+					"default": "label",
+					"description": "set options label property name"
+				},
+				"enum2map.optionsValue": {
+					"type":"string",
+					"default": "value",
+					"description": "set options value property name"
+				}
+			}
 		}
 	},
 	"repository": {
