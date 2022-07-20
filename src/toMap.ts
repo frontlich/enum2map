@@ -1,7 +1,7 @@
 import { isEnumMember } from "typescript";
 import type { SourceFile, EnumDeclaration } from "typescript";
 
-import { getComment, getCommentContent } from "./utils";
+import { firstChar2lowerCase, getComment, getCommentContent } from "./utils";
 
 export function toMap(node: EnumDeclaration, sourceFile: SourceFile) {
   const firstToken = node.getFirstToken(sourceFile)?.getFullText(sourceFile);
@@ -10,7 +10,7 @@ export function toMap(node: EnumDeclaration, sourceFile: SourceFile) {
 
   let outputCode = `${comment ? `${comment}\n` : ""}${
     firstToken?.endsWith("export") ? "export " : ""
-  }const ${node.name.text}Map: Record<${node.name.text}, string> = {`;
+  }const ${firstChar2lowerCase(node.name.text)}Map: Record<${node.name.text}, string> = {`;
 
   const members: string[] = [];
   node.forEachChild((n) => {

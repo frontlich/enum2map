@@ -2,7 +2,7 @@ import * as vscode from "vscode";
 import { isEnumMember } from "typescript";
 import type { SourceFile, EnumDeclaration } from "typescript";
 
-import { getComment, getCommentContent } from "./utils";
+import { firstChar2lowerCase, getComment, getCommentContent } from "./utils";
 
 export function toOptions(node: EnumDeclaration, sourceFile: SourceFile) {
   const options = vscode.workspace.getConfiguration("enum2map");
@@ -16,7 +16,7 @@ export function toOptions(node: EnumDeclaration, sourceFile: SourceFile) {
   let outputCode = `${comment ? `${comment}\n` : ""}${
     firstToken?.endsWith("export") ? "export " : ""
   }const ${
-    node.name.text
+    firstChar2lowerCase(node.name.text)
   }Options: Array<{ ${labelName}: string; ${valueName}: ${
     node.name.text
   } }> = [`;
