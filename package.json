@@ -2,7 +2,7 @@
   "name": "enum2map",
 	"displayName": "enum2map(enum map generator)",
 	"description": "generate mapper from enum in TS; enum2map",
-	"version": "0.0.1",
+	"version": "0.0.3",
 	"engines": {
 		"vscode": "^1.69.0"
 	},
@@ -38,6 +38,7 @@
 		"url": "https://github.com/frontlich/enum2map.git"
 	},
 	"publisher": "frontlich",
+	"icon": "assets/favicon.ico",
 	"scripts": {
 		"vscode:prepublish": "yarn run package",
 		"compile": "webpack",
