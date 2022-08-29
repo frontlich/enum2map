@@ -45,11 +45,11 @@ function createGenerator(
     }
 
     vscode.window.activeTextEditor?.edit((builder) => {
-      const enumMap = transform(sourceCode, convert);
-      if (enumMap) {
+      const outputCode = transform(sourceCode, convert);
+      if (outputCode) {
         builder.insert(
           selection.end,
-          `${sourceCode.endsWith("\n") ? "" : "\n"}\n${enumMap}`
+          `${sourceCode.endsWith("\n") ? "" : "\n"}\n${outputCode}`
         );
       } else {
         vscode.window.showErrorMessage("active selection is not enum");
