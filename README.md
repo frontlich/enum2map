@@ -7,8 +7,9 @@
 安装完成并且启用插件之后
 
 定义一个枚举类型，然后全选该枚举,
-1. 按快捷键 mac: `option + m`, windows: `alt + m` 或右键菜单点击 enum2map-map，即可生成对应映射
-2. 按快捷键 mac: `option + o`, windows: `alt + o` 或右键菜单点击 enum2map-options，即可生成对应的options
+1. 按快捷键 mac: `option + m`, windows: `alt + m` 或右键菜单点击 enum2map-map，即可生成对应映射（Map）
+2. 按快捷键 mac: `option + r`, windows: `alt + r` 或右键菜单点击 enum2map-map，即可生成对应映射（Record）
+3. 按快捷键 mac: `option + o`, windows: `alt + o` 或右键菜单点击 enum2map-options，即可生成对应的options
 
 生成的option项，默认类型是 Array<{ label: string; value: Enum }>;
 
