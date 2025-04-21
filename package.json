@@ -111,5 +111,5 @@
 		"webpack-cli": "^4.10.0",
 		"@vscode/test-electron": "^2.1.5"
 	}
-};
+}
 
