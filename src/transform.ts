@@ -2,6 +2,7 @@ import * as vscode from "vscode";
 import { isEnumDeclaration, createSourceFile, ScriptTarget } from "typescript";
 import type { Node, EnumDeclaration, SourceFile } from "typescript";
 
+import { toRecord } from "./toRecord";
 import { toMap } from "./toMap";
 import { toOptions } from "./toOptions";
 
@@ -59,4 +60,5 @@ function createGenerator(
 }
 
 export const generateMap = createGenerator(toMap);
+export const generateRecord = createGenerator(toRecord);
 export const generateOptions = createGenerator(toOptions);

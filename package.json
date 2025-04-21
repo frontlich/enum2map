@@ -2,7 +2,7 @@
   "name": "enum2map",
 	"displayName": "enum2map(enum map generator)",
 	"description": "generate mapper from enum in TS; enum2map",
-	"version": "0.0.7",
+	"version": "0.1.0",
 	"engines": {
 		"vscode": "^1.69.0"
 	},
@@ -21,6 +21,10 @@
 				"title": "enum2map-map"
 			},
 			{
+				"command": "enum2map.generateRecord",
+				"title": "enum2map-record"
+			},
+			{
 				"command": "enum2map.generateOptions",
 				"title": "enum2map-options"
 			}
@@ -29,6 +33,10 @@
 			"editor/context": [
 				{
 					"command": "enum2map.generateMap",
+					"when": "editorLangId == typescript || editorLangId == typescriptreact && editorHasSelection"
+				},
+				{
+					"command": "enum2map.generateRecord",
 					"when": "editorLangId == typescript || editorLangId == typescriptreact && editorHasSelection"
 				},
 				{
@@ -41,6 +49,11 @@
 			{
 				"command": "enum2map.generateMap",
 				"key": "alt+m",
+				"when": "editorLangId == typescript || editorLangId == typescriptreact && editorHasSelection"
+			},
+			{
+				"command": "enum2map.generateRecord",
+				"key": "alt+r",
 				"when": "editorLangId == typescript || editorLangId == typescriptreact && editorHasSelection"
 			},
 			{
@@ -99,3 +112,4 @@
 		"@vscode/test-electron": "^2.1.5"
 	}
 }
+
